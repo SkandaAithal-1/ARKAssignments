@@ -12,13 +12,20 @@ for i in range(np.shape(scan)[0]):
     plt.polar(angle[i], scan[i], 'g.')
 plt.show()'''
 
-tranScan = np.array([scan*np.cos(angle), scan*np.sin(angle)])
+tranScan = np.array([scan*np.cos(angle), scan*np.sin(angle)]) # Converting to rectangular coordinate system
 transRPoints = np.zeros(tranScan.shape)  #Points after transformation using Tc. Points with respect to the Robot's Frame of Reference
 transGPoints = np.zeros(tranScan.shape) # Points with respect to Global frame of reference.
 laser = np.matmul(Tr, Tc)
+
+'''
+Transforming the points to Robot's frame.
+'''
 for i in range(tranScan.shape[1]):
     transRPoints[:,i] = np.matmul(Tc, np.array([tranScan[0,i], tranScan[1,i], 1]))[:2]
 
+'''
+Transforming the points to Global Frame
+'''
 for i in range(tranScan.shape[1]):
     transGPoints[:,i] = np.matmul(Tr, np.array([transRPoints[0,i], transRPoints[1,i],1]))[:2]
 
